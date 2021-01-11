@@ -682,7 +682,7 @@ public class BoundaryTimerNonInterruptingEventTest {
     TimerEntity secondTimerJob = (TimerEntity) managementService.createJobQuery().singleResult();
     currentTime.add(Calendar.HOUR, 3);
     assertEquals("R3/PT3H", secondTimerJob.getRepeat());
-    assertEquals(sdf.format(currentTime.getTime()), sdf.format(secondTimerJob.getDuedate()));
+    assertThat(currentTime.getTime()).isCloseTo(secondTimerJob.getDuedate(), 1000);
   }
 
   @Test

@@ -289,7 +289,7 @@ public class CleanableHistoricBatchReportTest {
     processEngineConfiguration.setBatchOperationsForHistoryCleanup(map);
     processEngineConfiguration.initHistoryCleanup();
 
-    Date startDate = ClockUtil.getCurrentTime();
+    Date startDate = DateUtils.setMilliseconds(ClockUtil.getCurrentTime(), 0);
     int daysInThePast = -11;
     ClockUtil.setCurrentTime(DateUtils.addDays(startDate, daysInThePast));
 

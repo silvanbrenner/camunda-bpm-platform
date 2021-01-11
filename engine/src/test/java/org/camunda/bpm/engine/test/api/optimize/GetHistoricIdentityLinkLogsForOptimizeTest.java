@@ -24,6 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
@@ -221,21 +222,21 @@ public class GetHistoricIdentityLinkLogsForOptimizeTest {
     testHelper.deploy(simpleDefinition);
     runtimeService.startProcessInstanceByKey("process");
     String taskId = taskService.createTaskQuery().singleResult().getId();
-    Date now = new Date();
-    ClockUtil.setCurrentTime(now);
+    Date currentTime = DateUtils.addHours(new Date(), 1);
+    ClockUtil.setCurrentTime(currentTime);
     taskService.addCandidateUser(taskId, userId);
 
-    Date nowPlus2Seconds = new Date(now.getTime() + 2000L);
-    ClockUtil.setCurrentTime(nowPlus2Seconds);
+    Date currentTimePlus2Seconds = new Date(currentTime.getTime() + 2000L);
+    ClockUtil.setCurrentTime(currentTimePlus2Seconds);
     taskService.deleteCandidateUser(taskId, userId);
 
-    Date nowPlus4Seconds = new Date(now.getTime() + 4000L);
-    ClockUtil.setCurrentTime(nowPlus4Seconds);
+    Date currentTimePlus4Seconds = new Date(currentTime.getTime() + 4000L);
+    ClockUtil.setCurrentTime(currentTimePlus4Seconds);
     taskService.addCandidateUser(taskId, userId);
 
     // when
     List<OptimizeHistoricIdentityLinkLogEntity> identityLinkLogs =
-      optimizeService.getHistoricIdentityLinkLogs(now, null, 10);
+      optimizeService.getHistoricIdentityLinkLogs(currentTime, null, 10);
 
     // then
     assertThat(identityLinkLogs.size(), is(2));

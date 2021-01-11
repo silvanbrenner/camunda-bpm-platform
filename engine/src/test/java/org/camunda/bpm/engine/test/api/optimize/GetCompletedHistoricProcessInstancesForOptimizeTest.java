@@ -23,6 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
@@ -126,7 +127,7 @@ public class GetCompletedHistoricProcessInstancesForOptimizeTest {
       .endEvent()
       .done();
     testHelper.deploy(simpleDefinition);
-    Date now = new Date();
+    Date now = DateUtils.setMilliseconds(new Date(), 0);
     ClockUtil.setCurrentTime(now);
     runtimeService.startProcessInstanceByKey("process");
     Date nowPlus2Seconds = new Date(now.getTime() + 2000L);

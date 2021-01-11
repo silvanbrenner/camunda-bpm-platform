@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.ManagementService;
 import org.camunda.bpm.engine.RepositoryService;
@@ -77,7 +78,7 @@ public class RepositoryByteArrayTest {
 
   @Test
   public void testResourceBinary() {
-    Date fixedDate = new Date();
+    Date fixedDate = DateUtils.setMilliseconds(new Date(), 0);
     ClockUtil.setCurrentTime(fixedDate);
 
     String bpmnDeploymentId = testRule.deploy("org/camunda/bpm/engine/test/repository/one.bpmn20.xml").getId();
@@ -91,7 +92,7 @@ public class RepositoryByteArrayTest {
 
   @Test
   public void testFormsBinaries() {
-    Date fixedDate = new Date();
+    Date fixedDate = DateUtils.setMilliseconds(new Date(), 0);
     ClockUtil.setCurrentTime(fixedDate);
 
     String deploymentId = testRule.deploy("org/camunda/bpm/engine/test/api/form/DeployedFormsProcess.bpmn20.xml",
@@ -111,7 +112,7 @@ public class RepositoryByteArrayTest {
   @Test
   public void testUserPictureBinary() {
     // when
-    Date fixedDate = new Date();
+    Date fixedDate = DateUtils.setMilliseconds(new Date(), 0);
     ClockUtil.setCurrentTime(fixedDate);
     User user = identityService.newUser(USER_ID);
     identityService.saveUser(user);

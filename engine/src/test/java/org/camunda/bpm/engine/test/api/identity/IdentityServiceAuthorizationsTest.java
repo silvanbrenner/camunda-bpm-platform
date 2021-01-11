@@ -1165,12 +1165,11 @@ public class IdentityServiceAuthorizationsTest extends PluggableProcessEngineTes
     assertEquals(1, identityService.createTenantQuery().count());
   }
 
-  protected void lockUser(String userId, String invalidPassword) throws ParseException {
-    Date now = ClockUtil.getCurrentTime();
+  protected void lockUser(String userId, String invalidPassword) {
     try {
       for (int i = 0; i <= 11; i++) {
         assertFalse(identityService.checkPassword(userId, invalidPassword));
-        now = DateUtils.addMinutes(ClockUtil.getCurrentTime(), 1);
+        Date now = DateUtils.addMinutes(DateUtils.setMilliseconds(ClockUtil.getCurrentTime(), 0), 1);
         ClockUtil.setCurrentTime(now);
       }
     } catch (Exception e) {

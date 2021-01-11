@@ -1226,6 +1226,7 @@ public class HistoricProcessInstanceTest {
   public void testHistoricProcInstExecutedActivityAfter() {
     // given
     Calendar now = Calendar.getInstance();
+    now.clear(Calendar.MILLISECOND);
     ClockUtil.setCurrentTime(now.getTime());
     BpmnModelInstance model = Bpmn.createExecutableProcess("proc").startEvent().endEvent().done();
     deployment(model);
@@ -1252,6 +1253,7 @@ public class HistoricProcessInstanceTest {
   public void testHistoricProcInstExecutedActivityBefore() {
     // given
     Calendar now = Calendar.getInstance();
+    now.clear(Calendar.MILLISECOND);
     ClockUtil.setCurrentTime(now.getTime());
     BpmnModelInstance model = Bpmn.createExecutableProcess("proc").startEvent().endEvent().done();
     deployment(model);
@@ -1281,6 +1283,7 @@ public class HistoricProcessInstanceTest {
     deployment(model);
 
     Calendar now = Calendar.getInstance();
+    now.clear(Calendar.MILLISECOND);
     Calendar hourBeforeNow = (Calendar) now.clone();
     hourBeforeNow.add(Calendar.HOUR, -1);
 
@@ -1375,6 +1378,7 @@ public class HistoricProcessInstanceTest {
     deployment(model);
 
     Calendar now = Calendar.getInstance();
+    now.clear(Calendar.MILLISECOND);
     ClockUtil.setCurrentTime(now.getTime());
     Calendar hourBeforeNow = (Calendar) now.clone();
     hourBeforeNow.add(Calendar.HOUR_OF_DAY, -1);
@@ -1409,6 +1413,7 @@ public class HistoricProcessInstanceTest {
     deployment(model);
 
     Calendar now = Calendar.getInstance();
+    now.clear(Calendar.MILLISECOND);
     ClockUtil.setCurrentTime(now.getTime());
     Calendar hourBeforeNow = (Calendar) now.clone();
     hourBeforeNow.add(Calendar.HOUR_OF_DAY, -1);

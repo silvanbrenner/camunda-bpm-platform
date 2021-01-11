@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
@@ -91,7 +92,7 @@ public class HistoricActivityInstanceTest extends PluggableProcessEngineTest {
     assertNotNull(historicActivityInstance.getStartTime());
 
     // move clock by 1 second
-    Date now = ClockUtil.getCurrentTime();
+    Date now = DateUtils.setMilliseconds(ClockUtil.getCurrentTime(), 1);
     ClockUtil.setCurrentTime(new Date(now.getTime() + 1000));
 
     runtimeService.signal(processInstance.getId());

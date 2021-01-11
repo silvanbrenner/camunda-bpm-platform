@@ -2830,7 +2830,8 @@ public class ExternalTaskServiceTest extends PluggableProcessEngineTest {
       // then
       ExternalTask taskWithExtendedLock = externalTaskService.createExternalTaskQuery().locked().singleResult();
       assertNotNull(taskWithExtendedLock);
-      AssertUtil.assertEqualsSecondPrecision(new Date(extendLockTime.getTime() + LOCK_TIME), taskWithExtendedLock.getLockExpirationTime());
+      assertThat(new Date(extendLockTime.getTime() + LOCK_TIME))
+          .isCloseTo(taskWithExtendedLock.getLockExpirationTime(), 1000);
 
     } finally {
       ClockUtil.setCurrentTime(oldCurrentTime);

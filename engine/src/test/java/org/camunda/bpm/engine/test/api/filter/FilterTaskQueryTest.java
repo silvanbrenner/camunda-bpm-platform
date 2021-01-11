@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
+import org.apache.commons.lang3.time.DateUtils;
 import org.camunda.bpm.engine.EntityTypes;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.filter.Filter;
@@ -2012,7 +2013,7 @@ public class FilterTaskQueryTest extends PluggableProcessEngineTest {
   @Test
   public void testDueDate() {
     // given
-    Date date = new Date();
+    Date date = DateUtils.setMilliseconds(new Date(), 0);
     String processInstanceId = runtimeService.startProcessInstanceByKey("oneTaskProcess").getId();
 
     Task task = taskService.createTaskQuery()

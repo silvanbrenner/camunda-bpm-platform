@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.camunda.bpm.engine.EntityTypes;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
@@ -494,22 +495,22 @@ public class GetHistoricOperationLogsForOptimizeTest {
   @Test
   public void occurredAfterParameterWorks() {
     // given
-    Date now = new Date();
-    ClockUtil.setCurrentTime(now);
+    Date currentTime = DateUtils.addHours(new Date(), 1);
+    ClockUtil.setCurrentTime(currentTime);
     final ProcessInstance processInstance = engineRule.getRuntimeService().startProcessInstanceByKey("process");
     runtimeService.suspendProcessInstanceById(processInstance.getProcessInstanceId());
 
-    Date nowPlus2Seconds = new Date(now.getTime() + 2000L);
-    ClockUtil.setCurrentTime(nowPlus2Seconds);
+    Date currentTimePlus2Seconds = new Date(currentTime.getTime() + 2000L);
+    ClockUtil.setCurrentTime(currentTimePlus2Seconds);
     runtimeService.activateProcessInstanceById(processInstance.getProcessInstanceId());
 
-    Date nowPlus4Seconds = new Date(now.getTime() + 4000L);
-    ClockUtil.setCurrentTime(nowPlus4Seconds);
+    Date currentTimePlus4Seconds = new Date(currentTime.getTime() + 4000L);
+    ClockUtil.setCurrentTime(currentTimePlus4Seconds);
     runtimeService.suspendProcessInstanceById(processInstance.getProcessInstanceId());
 
     // when
     List<UserOperationLogEntry> userOperationsLog =
-      optimizeService.getHistoricUserOperationLogs(now, null, 10);
+      optimizeService.getHistoricUserOperationLogs(currentTime, null, 10);
 
     // then
     Set<String> allowedOperationsTypes = new HashSet<>(Arrays.asList(OPERATION_TYPE_SUSPEND, OPERATION_TYPE_ACTIVATE));
@@ -521,7 +522,7 @@ public class GetHistoricOperationLogsForOptimizeTest {
   @Test
   public void occurredAtParameterWorks() {
     // given
-    Date now = new Date();
+    Date now =  DateUtils.setMilliseconds(new Date(), 0);
     ClockUtil.setCurrentTime(now);
     final ProcessInstance processInstance = engineRule.getRuntimeService().startProcessInstanceByKey("process");
     runtimeService.suspendProcessInstanceById(processInstance.getProcessInstanceId());

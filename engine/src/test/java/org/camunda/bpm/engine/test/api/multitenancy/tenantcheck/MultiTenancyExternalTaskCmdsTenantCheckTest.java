@@ -22,16 +22,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.camunda.bpm.engine.ExternalTaskService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.externaltask.LockedExternalTask;
+import org.camunda.bpm.engine.impl.calendar.DateTimeUtil;
+import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.test.util.ProcessEngineTestRule;
 import org.camunda.bpm.engine.test.util.ProvidedProcessEngineRule;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -83,6 +88,11 @@ public class MultiTenancyExternalTaskCmdsTenantCheckTest {
 
     processInstanceId = engineRule.getRuntimeService().startProcessInstanceByKey(PROCESS_DEFINITION_KEY).getId();
 
+  }
+
+  @After
+  public void tearDown() {
+    ClockUtil.reset();
   }
 
   // fetch and lock test cases
@@ -275,6 +285,7 @@ public class MultiTenancyExternalTaskCmdsTenantCheckTest {
   // handle failure test cases
   @Test
   public void testHandleFailureWithAuthenticatedTenant() {
+    ClockUtil.setCurrentTime(DateUtils.setMilliseconds(ClockUtil.getCurrentTime(), 0));
 
     LockedExternalTask task = externalTaskService.fetchAndLock(1, WORKER_ID)
       .topic(TOPIC_NAME, LOCK_TIME)
@@ -313,6 +324,7 @@ public class MultiTenancyExternalTaskCmdsTenantCheckTest {
 
   @Test
   public void testHandleFailureWithDisabledTenantCheck() {
+    ClockUtil.setCurrentTime(DateUtils.setMilliseconds(ClockUtil.getCurrentTime(), 0));
 
     String taskId = externalTaskService.fetchAndLock(1, WORKER_ID)
       .topic(TOPIC_NAME, LOCK_TIME)
